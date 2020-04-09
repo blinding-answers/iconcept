@@ -1,1 +1,3 @@
-# i_concept
+# iConcept pyhton driver
+Interface and controle iConcept pafers
+
