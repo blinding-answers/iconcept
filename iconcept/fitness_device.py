@@ -6,11 +6,6 @@ from iconcept.bluetooth import ChatListener, ChatService
 from multiprocessing.managers import BaseProxy
 from multiprocessing import Queue
 
-"""
-use python3 sockets and asyncio
-
-"""
-
 def fitness_device_factory(command_q):
     return FitnessDevice(command_q=command_q)
 
@@ -27,10 +22,13 @@ class FitnessDeviceProxy(BaseProxy):
 
     def start(self):
         self._callmethod("start")
-        
+
     def set_target_speed(self, value):
         self._callmethod("set_target_speed",[value])
     
+    def set_incline(self, value):
+        self._callmethod("set_incline",[value])
+
     def set_device_speed(self,value):
         self._callmethod("__set_device_speed",[value])
 

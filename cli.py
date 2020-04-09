@@ -61,6 +61,7 @@ def main():
             "get_connection_state",
             "start",
             "set_target_speed",
+            "set_incline",
             "__set_device_speed",
             "__set_device_pulse",
             "__set_device_incline",
@@ -88,6 +89,8 @@ def main():
     time.sleep(5)
     device.start()
     device.set_target_speed(5.0)
+    device.set_incline(4)
+
     chat_service_process.join()
 
 
