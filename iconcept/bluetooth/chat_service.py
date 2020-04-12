@@ -10,6 +10,7 @@ import time
 
 class ChatService:
     uuid="00001101-0000-1000-8000-00805F9B34FB"
+    # uuid=bluetooth.RFCOMM_UUID
     CONNECTION_STATE_NONE=0
     CONNECTION_STATE_CONNECTING=1
     CONNECTION_STATE_CONNECTED=2
@@ -18,14 +19,15 @@ class ChatService:
         self.listerner:ChatListener=None
         self.command_q=command_q
         
-    def connect(self,hardware_address):
+    def connect(self,hardware_address=None):
         if self.listerner is not None:
             # Set state
             self.listerner.on_state_changed(self.CONNECTION_STATE_CONNECTING)
             logger.debug(f"Connect to server on {hardware_address}")
+            # service_matches = bluetooth.find_service(uuid=self.uuid)
             service_matches = bluetooth.find_service(uuid=self.uuid, address=hardware_address)
             if len(service_matches) == 0:
-                logger.error("Couldn't find the SampleServer service.")
+                logger.error("Couldn't find the RFCOMM service.")
                 sys.exit(1)
 
             first_match = service_matches[0]
@@ -58,19 +60,23 @@ class ChatService:
             if len(readable) > 0:
                 socket=readable[0]
                 data = socket.recv(2048)
-                if data is not None:               
-                    received=data.hex()
-                    logger.debug(f"Received: {received}")
-                    self.listerner.on_data_read(message=received)
+                if data is not None:                                   
+                    logger.debug(f"Received: {data}")
+                    logger.debug(f"Received len: {len(data)}")
+                    with open('received_bin.bin','ab+') as f:
+                        f.write(data)
+                    self.listerner.on_data_read(data=data)
       
             if len(writable)>0:
                 socket=writable[0]
                 if not self.command_q.empty():
                     command=self.command_q.get()
                     logger.debug(f"Got command from command_q:{command}")
+                    # command_hex=
+                    # logger.debug(f"Converted to hex: {command_hex}")
                     bin_data = ''.join(map(lambda x: chr(x % 256), command)).encode('utf-8')                    
                     socket.send(bin_data)
-                    self.listerner.on_data_write(command)
+                    self.listerner.on_data_write(bin_data)
 
             if len(exceptional)>0:
                 self.listerner.on_state_changed(self.CONNECTION_STATE_NONE)

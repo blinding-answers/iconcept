@@ -10,9 +10,6 @@ import time
 from iconcept import FitnessDevice
 from iconcept import (
     FitnessDeviceSyncManager,
-    fitness_device_factory,
-    FitnessDeviceProxy,
-    FitnessDevice,
 )
 from iconcept.bluetooth import (
     ChatListener,
@@ -51,23 +48,6 @@ def main():
     hardware_address = "8C:DE:52:21:14:E4"
     # Setup multiprocess manager
     device_sync_manager = FitnessDeviceSyncManager()
-    device_sync_manager.register(
-        "fitness_device",
-        fitness_device_factory,
-        proxytype=FitnessDeviceProxy,
-        exposed=(
-            "init_device",
-            "set_connection_state",
-            "get_connection_state",
-            "start",
-            "set_target_speed",
-            "set_incline",
-            "__set_device_speed",
-            "__set_device_pulse",
-            "__set_device_incline",
-        ),
-    )
-
     device_sync_manager.start()
     # this queue is used to send command to the chat_service
     command_q = device_sync_manager.Queue()
@@ -81,15 +61,15 @@ def main():
     chat_service_process.start()
 
     while True:        
-        logger.debug(f"Waiting for Connection : state = {device.get_connection_state()}")
-        if device.get_connection_state() == 2:
+        logger.debug(f"Waiting for Connection : state = {device.connection_state}")
+        if device.connection_state == 2:
             break               
         time.sleep(1)
     
-    time.sleep(5)
+    # time.sleep(5)
     device.start()
-    device.set_target_speed(5.0)
-    device.set_incline(4)
+    device.set_target_speed(4)
+    # device.set_incline(8)
 
     chat_service_process.join()
 

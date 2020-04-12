@@ -2,45 +2,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 from typing import List, Union
-from iconcept.bluetooth import ChatListener, ChatService
-from multiprocessing.managers import BaseProxy
 from multiprocessing import Queue
+from iconcept import UnitUtil
 
-def fitness_device_factory(command_q):
-    return FitnessDevice(command_q=command_q)
-
-class FitnessDeviceProxy(BaseProxy):
-
-    def init_device(self):
-        self._callmethod("init_device")
-
-    def set_connection_state(self, value):
-        self._callmethod("set_connection_state",[value])
-    
-    def get_connection_state(self):
-        return self._callmethod("get_connection_state")
-
-    def start(self):
-        self._callmethod("start")
-
-    def set_target_speed(self, value):
-        self._callmethod("set_target_speed",[value])
-    
-    def set_incline(self, value):
-        self._callmethod("set_incline",[value])
-
-    def set_device_speed(self,value):
-        self._callmethod("__set_device_speed",[value])
-
-    def set_device_pulse(self, value):
-        self._callmethod("__set_device_pulse",[value])
-
-    def set_device_incline(self, value):
-        self._callmethod("__set_device_inline",[value])
-
-    
-    
-
+from iconcept import FitnessDeviceListenerBase
 
 class FitnessDevice:
     COMMAND_QUERY_MANUFACTURER = [85, -75, 1, -1]
@@ -48,28 +13,100 @@ class FitnessDevice:
     COMMAND_START = [85, 10, 1, 1]
     COMMAND_PAUSE = [85, 10, 1]
     COMMAND_STOP = [85, 10, 1, 3]
+    COMMAND_ENABLE_START_KEY = [85, 8, 1, 1 ]
+
+    DEVICE_TYPE_BIKE = 0
+    DEVICE_TYPE_ELLIPTICAL = 1
+    DEVICE_TYPE_TREADMILL = 2
+
+    DEVICE_STATUS_OFFLINE=0
+    DEVICE_STATUS_STANDBY=1
+    DEVICE_STATUS_RUNNING=2
+    DEVICE_STATUS_PAUSED=3
+
+    DEVICE_UNIT_METRIC = 0
 
     def __init__(self, command_q:Queue):
-        """
-            this.mListeners = new ConcurrentLinkedQueue<FitnessHwApiDeviceListener>();
-            this.mChatService = new BluetoothChatService();
-            this.mChatService.setListener(this.mBluetoothChatListener);
-        """
+        self.__device_name = None
+        self.__device_speed = None
+        self.__device_pulse = None
+        self.__device_incline = None
+        self.__device_unit = None
+        self.__device_type = None
+        self.__connection_state = 0
+        self.__device_status = None
+        self.command_q = command_q
+        self.device_listerners:Union[List[FitnessDeviceListenerBase],None] = None
 
-        self.__speed=None
-        self.__pulse=None
-        self.__incline=None
-        self.__connection_state=0
-        self.command_q=command_q
-        self.device_listerners = None
+    @property
+    def device_name(self):
+        return self.__device_name
+
+    @device_name.setter
+    def device_name(self, value):
+        self.__device_name = value
 
 
-    def set_connection_state(self, value:int):
-        self.__connection_state=value
+    @property
+    def device_speed(self):
+        return self.__device_speed
 
-    def get_connection_state(self):
+    @device_speed.setter
+    def device_speed(self, value):
+        self.__device_speed = value
+
+    @property
+    def device_pulse(self):
+        return self.__device_pulse
+
+    @device_pulse.setter
+    def device_pulse(self, value):
+        self.__device_pulse = value
+
+    @property
+    def device_incline(self):
+        return self.__device_incline
+
+    @device_incline.setter
+    def device_incline(self, value):
+        self.__device_incline = value
+
+    @property
+    def device_unit(self):
+        return self.__device_unit
+
+    @device_unit.setter
+    def device_unit(self, value):
+        self.__device_unit = value
+
+    @property
+    def device_type(self):
+        return self.__device_type
+
+    @device_type.setter
+    def device_type(self, value):
+        self.__device_type = value
+
+    @property
+    def device_status(self):
+        return self.__device_status
+
+    @device_status.setter
+    def device_status(self, value):
+        self.__device_status = value
+
+    @property
+    def connection_state(self):
         return self.__connection_state
 
+    @connection_state.setter
+    def connection_state(self, value:int):
+        self.__connection_state=value
+
+
+    
+
+    
     # def connect(self, hardware_address):
     #     self.chat_service.connect(hardware_address=hardware_address)
     #     self.chat_service.start_communication()
@@ -80,33 +117,33 @@ class FitnessDevice:
 
     def init_device(self):
         commands = [
-            [85, 12, 1, -1],
-            [85, -69, 1, -1],
-            [85, 36, 1, -1],
-            [85, 37, 1, -1],
-            [85, 38, 1, -1],
-            [85, 39, 1, -1],
-            [85, 2, 1, -1],
-            [85, 3, 1, -1],
-            [85, 4, 1, -1],
-            [85, 6, 1, -1],
-            [85, 31, 1, -1],
-            [85, -96, 1, -1],
-            [85, -80, 1, -1],
-            [85, -78, 1, -1],
-            [85, -77, 1, -1],
-            [85, -76, 1, -1],
-            [85, -75, 1, -1],
-            [85, -74, 1, -1],
-            [85, -73, 1, -1],
-            [85, -72, 1, -1],
-            [85, -71, 1, -1],
-            [85, -70, 1, -1],
-            [85, 11, 1, -1],
-            [85, 24, 1, -1],
-            [85, 25, 1, -1],
-            [85, 26, 1, -1],
-            [85, 27, 1, -1],
+            [85, 12, 1, -1], #0
+            [85, -69, 1, -1],#1
+            [85, 36, 1, -1],#2
+            [85, 37, 1, -1],#3
+            [85, 38, 1, -1],#4
+            [85, 39, 1, -1],#5
+            [85, 2, 1, -1],#6
+            [85, 3, 1, -1],#7
+            [85, 4, 1, -1],#8
+            [85, 6, 1, -1],#9
+            [85, 31, 1, -1],#10
+            [85, -96, 1, -1],#11
+            [85, -80, 1, -1],#12
+            [85, -78, 1, -1],#13
+            [85, -77, 1, -1],#14
+            [85, -76, 1, -1],#15
+            [85, -75, 1, -1],#16
+            [85, -74, 1, -1],#17
+            [85, -73, 1, -1],#18
+            [85, -72, 1, -1],#19
+            [85, -71, 1, -1],#20
+            [85, -70, 1, -1],#21
+            [85, 11, 1, -1],#22
+            [85, 24, 1, -1],#23
+            [85, 25, 1, -1],#24
+            [85, 26, 1, -1],#25
+            [85, 27, 1, -1],#26
         ]
 
         # join into single command..
@@ -115,6 +152,12 @@ class FitnessDevice:
             logger.debug(f"adding  {command}")
             command_to_send += command
         self.send_command(command_to_send)
+
+    def set_action_mode(self,mode:int):
+        logger.debug(f"SET ACTION MODE: {mode}")
+        command = [ 85, 21, 1, mode ]
+        self.send_command(command)
+  
 
     def queryManufacturer(self):
         logger.debug("QUERY MANUFACTURER")
@@ -136,22 +179,95 @@ class FitnessDevice:
         logger.debug("STOP")
         self.send_command(self.COMMAND_STOP)
 
-    def set_target_speed(self, speed: float):
-        logger.debug(f"Set speed to {speed}")
-        speed = float(speed)
-        # Double speedToCode = Double.valueOf(speed);
-        # if (!isMetric()) speedToCode = Double.valueOf(UnitUtil.km2mile(speedToCode.doubleValue()));
-        # byte speedByte1 = (byte)speedToCode.intValue();
-        # speedToCode = Double.valueOf((speedToCode.doubleValue() - speedToCode.intValue()) * 100.0D);
-        # byte speedByte2 = (byte)speedToCode.intValue();
 
+    def is_bike(self):
+        return self.device_type==self.DEVICE_TYPE_BIKE
+
+    def is_elliptical(self):
+        return self.device_type==self.DEVICE_TYPE_ELLIPTICAL
+
+    def is_treadmill(self):
+        return self.device_type==self.DEVICE_TYPE_TREADMILL
+
+
+    def is_bike_or_elliptical(self):
+       return self.is_bike() or self.is_elliptical()
+
+
+    def is_offline(self):
+        return self.device_status == self.DEVICE_STATUS_OFFLINE
+
+    def is_standby(self):
+        return self.device_status == self.DEVICE_STATUS_STANDBY
+
+    def is_running(self):
+        return self.device_status == self.DEVICE_STATUS_RUNNING
+
+    def is_paused(self):
+        return self.device_status == self.DEVICE_STATUS_PAUSED
+
+    def is_connected(self):
+        return self.device_status != self.DEVICE_STATUS_OFFLINE
+
+    def is_metric(self):
+        return self.device_unit == self.DEVICE_UNIT_METRIC
+    
+    def is_imperial(self):
+        return self.device_unit != self.DEVICE_UNIT_METRIC
+   
+    #  TODO figure out the unit of speed
+    def set_target_speed(self, speed: float):
+        logger.debug(f"SET TARGET SPEED: {speed}")
+        speed = float(speed)
+        if not self.is_metric():
+            speed=UnitUtil.mile2km(speed)
         # byte[] command = { 85, 15, 2, speedByte1, speedByte2 };
         speed_whole = int(speed)
-        speed_dec = int((speed - float(speed_whole)) * 100)
+        speed_dec = int(round((speed - float(speed_whole)),1) * 100)
         command = [85, 15, 2, speed_whole, speed_dec]
         self.send_command(command)
 
+
+    def set_target_time_distance_and_calorie(self,time:int, distance:float, calorie:float):
+        
+        if not self.is_metric():
+            distance=UnitUtil.mile2km(distance)
+        
+        distance_whole = int(distance)
+        distance_dec = int(round((distance - float(distance_whole)),1) * 100)
+
+        calorie_div_mod = divmod(calorie , 256)
+        command=[85, 14, 5, time, distance_whole,distance_dec, calorie_div_mod[0],calorie_div_mod[1]]
+        self.send_command(command)
+
+
     def set_incline(self, incline: int):
-        logger.debug(f"Set incline to {incline}")
+        logger.debug(f"SET INCLINE: {incline}")
         command = [85, 17, 1, incline]
         self.send_command(command)
+
+    def enable_start_key(self):
+        logger.debug("ENABLE START KEY")
+        self.send_command(self.COMMAND_ENABLE_START_KEY)
+
+
+    def notify_brand(self):
+      pass  
+    def notify_device_connect_failed(self):
+      pass  
+    def notify_device_connected(self):
+      pass  
+    def notify_device_disconnected(self):
+      pass  
+    def notify_device_paused(self):
+      pass  
+    def notify_device_resumed(self):
+      pass  
+    def notify_device_started(self):
+      pass  
+    def notify_device_stopped(self):
+      pass  
+    def notify_device_update(self):
+      pass  
+    def notify_manufacturer(self,value):
+        pass
