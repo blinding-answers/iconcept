@@ -89,7 +89,28 @@ Interface and controle iConcept pafers
 
 
 
-    ## Bluetooth proyx server
+## Bluetooth proyx server
 
+    sudo apt-get install libbluetooth-dev
+
+    <!-- dont know if this still required -->
     sudo setcap 'cap_net_raw,cap_net_admin+eip' `which hcitool`
     sudo setcap 'cap_net_raw,cap_net_admin+eip' `which hciconfig`
+
+
+    add user to bluetooth group
+    sudo vi /etc/systemd/system/dbus-org.bluez.service
+
+    [Service]
+    ExecStart=/usr/lib/bluetooth/bluetoothd -C
+    Group=bluetooth
+
+    <!-- then run -->
+    sudo hciconfig hci0 piscan
+    sudo systemctl daemon-reload
+    sudo /etc/init.d/bluetooth restart
+
+
+
+
+
