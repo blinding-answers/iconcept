@@ -8,13 +8,13 @@ def test_is_valid_with_valid_datagram_is_true():
 
 
 def test_is_valid_with_invalid_datagram_is_false():
-    datagram = "550d0a0000000000000000000"
+    datagram = "invalid"
     device_feedback = DeviceFeedback(datagram)
     assert False == device_feedback.is_valid()
 
 
 def test_invalid_datagram_give_zeros():
-    datagram = "550d0a0000000"
+    datagram = "invalid"
     device_feedback = DeviceFeedback(datagram)
     assert 0 == device_feedback.get_time()
     assert float == type(device_feedback.get_distance())
