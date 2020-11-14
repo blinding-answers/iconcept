@@ -150,27 +150,25 @@ client send this to init:
     550b01ff
     551801ff
     551901ff
-    551a01ff
-    
+    551a01ff    
     551b01ff
     
 treadmill responds with:
 
-    550c0100
-    
-    55bb0102
-    55c00224e1
-    
-    55c00225e1
-    
+    //set device unit
+    550c01 00 (00= metric !00 = imperial)
+    //device type
+    55bb01 02 ( 00 = bike , 01 = elliptical,  02 = treadill )
+
+    //dont know
+    55c00224e1    
+    55c00225e1    
     55c00226e1
 
-    55270101
+    55270101  # reponse to init command
     55020100
     55030100
-    550d0a00
-    00000000
-    0000000000
+    550d0a00000000000000000000
     55040204e1
     550602005a
     55c00206c2
@@ -312,9 +310,11 @@ client:
     551b01ff
 
 treadmill:
-    
-    550c0100
-    55bb0102
+
+    //set device unit
+    550c01 00 (0= metric !0 = imperial)
+    //device type
+    55bb01 02 ( 0 = bike , 1 = elliptical,  2 = treadill )
     55c00224e1
     550d0a00000000000000000000
     
