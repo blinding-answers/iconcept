@@ -368,4 +368,10 @@ treadmill:
     55c0020ac2
     55c0020ac1//19.357841s
     
+    
+from treadmill  
+55090100 - paused  
+55090101 - running  
+55090102 - standby  
+    
      
