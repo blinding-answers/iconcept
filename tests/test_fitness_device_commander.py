@@ -3,6 +3,43 @@ from iconcept.fitness_device_commander import FitnessDeviceCommander
 from iconcept.enums.fitness_device_mode import FitnessDeviceMode
 
 
+def test_init_command():
+    channel = Channel()
+    commander = FitnessDeviceCommander(channel=channel)
+    commander.init()
+
+    commands = [
+        "550C01FF",
+        "55BB01FF",
+        "552401FF",
+        "552501FF",
+        "552601FF",
+        "552701FF",
+        "550201FF",
+        "550301FF",
+        "550401FF",
+        "550601FF",
+        "551F01FF",
+        "55A001FF",
+        "55B001FF",
+        "55B201FF",
+        "55B301FF",
+        "55B401FF",
+        "55B501FF",
+        "55B601FF",
+        "55B701FF",
+        "55B801FF",
+        "55B901FF",
+        "55BA01FF",
+        "550B01FF",
+        "551801FF",
+        "551901FF",
+        "551A01FF",
+        "551B01FF",
+    ]
+    assert ''.join(commands) == channel.last_command
+
+
 def test_reset_command():
     channel = Channel()
     commander = FitnessDeviceCommander(channel=channel)
