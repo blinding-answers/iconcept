@@ -104,3 +104,14 @@ class FitnessDeviceCommander:
         # COMMAND_QUERY_MANUFACTURER = [85, -75, 1, -1]  # 55b401ff
         command = "55B401FF"
         self.channel.send(command)
+
+    def keep_alive(self, keep_alive: bool):
+        logger.debug("KEEP ALIVE")
+        # COMMAND_KEEP_ALIVE = [85, 23, 1]  # 551701
+        if keep_alive:
+            key = 1
+        else:
+            key = 0
+        key_hex = integer_to_hex_string(key)
+        command = f"551701{key_hex}"
+        self.channel.send(command)

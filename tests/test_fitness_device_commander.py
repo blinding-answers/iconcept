@@ -111,3 +111,15 @@ def test_query_manufacturer():
     commander = FitnessDeviceCommander(channel=channel)
     commander.query_manufacturer()
     assert "55B401FF" == channel.last_command
+
+
+def test_keep_alive():
+    channel = Channel()
+    commander = FitnessDeviceCommander(channel=channel)
+    commander.keep_alive(True)
+    assert "55170101" == channel.last_command
+    commander.keep_alive(False)
+    assert "55170100" == channel.last_command
+
+
+
