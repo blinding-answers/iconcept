@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class AbstractMessage(metaclass=ABCMeta):
+class AbstractDatagram(metaclass=ABCMeta):
     @abstractmethod
     def get_header_pattern(self) -> str:
         pass

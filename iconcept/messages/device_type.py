@@ -1,8 +1,8 @@
 from iconcept.message_extractor import extract_datagram
-from iconcept.messages.abstract_message import AbstractMessage
+from iconcept.messages.abstract_datagram import AbstractDatagram
 
 
-class DeviceType(AbstractMessage):
+class DeviceType(AbstractDatagram):
 
     def __init__(self, message: str):
         self.message = extract_datagram(message, self.get_header_pattern(), self.get_total_length())
