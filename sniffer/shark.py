@@ -4,11 +4,16 @@ from pyshark.packet.packet import Packet
 import json
 import sys
 
+import fnmatch
+
 path = os.path.dirname(os.path.abspath(__file__))
 dumps_dir = os.path.join(path, 'packet_dumps')
 btsnoop = os.path.join(dumps_dir, 'fitconsole_spp.pcap')
 
-for filename in os.listdir(dumps_dir):
+pscap_files = fnmatch.filter(os.listdir(dumps_dir), '*.pcap')
+
+for filename in pscap_files:
+
     file_path = os.path.join(dumps_dir, filename)
     cap1 = pyshark.FileCapture(file_path)
 
@@ -17,9 +22,11 @@ for filename in os.listdir(dumps_dir):
     for packet in cap1:
         if 'BTSPP' in packet:
             data = dict()
-            # print(packet.hci_h4.direction)
+            # print(packet.frame_info.time)
+            # sys.exit()
             data = {
                 "number": packet.number,
+                "time": packet.frame_info.time,
                 "direction": "receive" if packet.hci_h4.direction == '0x00000001' else "send",
                 "source": packet.bthci_acl.src_bd_addr,
                 "destination": packet.bthci_acl.dst_bd_addr,
