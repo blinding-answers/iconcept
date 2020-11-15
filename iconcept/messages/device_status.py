@@ -1,13 +1,20 @@
 from iconcept.message_extractor import extract_datagram
+from iconcept.messages.abstract_message import AbstractMessage
 
 
-class DeviceStatus:
-    HEADER_PATTERN = '550901'
-    HEADER_LENGTH = 6
-    MESSAGE_LENGTH = 2
+class DeviceStatus(AbstractMessage):
 
     def __init__(self, message: str):
-        self.message = extract_datagram(message, self.HEADER_PATTERN, self.HEADER_LENGTH + self.MESSAGE_LENGTH)
+        self.message = extract_datagram(message, self.get_header_pattern(), self.get_total_length())
+
+    def get_header_pattern(self) -> str:
+        return '550901'
+
+    def get_header_length(self) -> int:
+        return 6
+
+    def get_message_length(self) -> int:
+        return 2
 
     def is_valid(self) -> bool:
         return self.message is not None
