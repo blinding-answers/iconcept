@@ -28,3 +28,6 @@ class DeviceManufacturer(AbstractDatagram):
 
         manufacturer_hex = self.message[6: 6 + self.get_message_length()]
         return bytearray.fromhex(manufacturer_hex).decode()
+
+    def __str__(self):
+        return f"{self.__class__.__name__}: manufacturer={self.get_manufacturer()}"

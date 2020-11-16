@@ -25,3 +25,6 @@ class AbstractDatagram(metaclass=ABCMeta):
     @abstractmethod
     def is_valid(self) -> bool:
         pass
+
+    def __str__(self):
+        return self.__class__.__name__

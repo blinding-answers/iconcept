@@ -1,8 +1,7 @@
 import unittest
 from iconcept.fitness_device_message_processor import FitnessDeviceMessageProcessor
-from iconcept.messages.abstract_datagram import AbstractDatagram
 from .fakes.fake_datagram import FakeDatagram
-from iconcept.exceptions.unknown_datagram import UnknownDatagram
+from iconcept.exceptions.unknown_datagram_exception import UnknownDatagramException
 
 
 class FitnessDeviceMessageProcessorTest(unittest.TestCase):
@@ -38,11 +37,11 @@ class FitnessDeviceMessageProcessorTest(unittest.TestCase):
             ]
         )
         data_for_datagram = 'abc'
-        with self.assertRaises(UnknownDatagram):
+        with self.assertRaises(UnknownDatagramException):
             processor.get_datagrams(''.join([data_for_datagram]))
 
         data_for_datagram = 'abde'
-        with self.assertRaises(UnknownDatagram):
+        with self.assertRaises(UnknownDatagramException):
             processor.get_datagrams(''.join([data_for_datagram]))
 
 

@@ -5,7 +5,7 @@ from iconcept.messages.device_feedback import DeviceFeedback
 from iconcept.messages.device_manufacturer import DeviceManufacturer
 from iconcept.messages.device_model import DeviceModel
 from iconcept.messages.abstract_datagram import AbstractDatagram
-from iconcept.exceptions.unknown_datagram import UnknownDatagram
+from iconcept.exceptions.unknown_datagram_exception import UnknownDatagramException
 from iconcept.messages.unknown_datagram import UnknownMessage1, UnknownMessage2, UnknownMessage3, UnknownMessage4, \
     UnknownMessage5, UnknownMessage6, UnknownMessage7, UnknownMessage8, UnknownMessage9, UnknownMessage10, \
     UnknownMessage11, UnknownMessage12, UnknownMessage13, UnknownMessage14, UnknownMessage15, \
@@ -65,5 +65,5 @@ class FitnessDeviceMessageProcessor:
                         break
 
             else:
-                raise UnknownDatagram(f'Unknown datagram starting with {data[position:]}')
+                raise UnknownDatagramException(f'Unknown datagram starting with {data[position:]}')
         return datagrams

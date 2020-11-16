@@ -1,6 +1,6 @@
 import unittest
 from iconcept.messages.device_type import DeviceType
-from iconcept.exceptions.invalid_datagram import InvalidDatagram
+from iconcept.exceptions.invalid_datagram_exception import InvalidDatagramException
 
 
 class DeviceTypeTest(unittest.TestCase):
@@ -41,5 +41,5 @@ class DeviceTypeTest(unittest.TestCase):
         datagram = "55bb0104"
         device_type = DeviceType()
         device_type.ingest_data(datagram)
-        with self.assertRaises(InvalidDatagram):
+        with self.assertRaises(InvalidDatagramException):
             device_type.get_type()

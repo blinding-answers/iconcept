@@ -1,2 +1,0 @@
-class InvalidDatagram(Exception):
-    pass

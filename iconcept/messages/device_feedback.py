@@ -1,5 +1,6 @@
 from iconcept.message_extractor import extract_datagram
 from iconcept.messages.abstract_datagram import AbstractDatagram
+import json
 
 
 class DeviceFeedback(AbstractDatagram):
@@ -67,3 +68,15 @@ class DeviceFeedback(AbstractDatagram):
             return 0
         pulse_hex = self.message[24: 24 + 2]
         return int(pulse_hex, 16)
+
+    def __str__(self):
+        return json.dumps({
+            self.__class__.__name__: {
+                "time": self.get_time(),
+                "distance": self.get_distance(),
+                "calorie": self.get_distance(),
+                "speed": self.get_speed(),
+                "incline": self.get_incline(),
+                "pulse": self.get_pulse(),
+            }
+        }, indent=4)
