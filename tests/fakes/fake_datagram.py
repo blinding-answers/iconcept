@@ -1,4 +1,5 @@
 from iconcept.messages.abstract_datagram import AbstractDatagram
+from iconcept.message_extractor import extract_datagram
 
 
 class FakeDatagram(AbstractDatagram):
@@ -13,7 +14,7 @@ class FakeDatagram(AbstractDatagram):
         self.message = None
 
     def ingest_data(self, data: str) -> None:
-        self.message = data
+        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
 
     def get_header_pattern(self) -> str:
         return self.header_pattern
