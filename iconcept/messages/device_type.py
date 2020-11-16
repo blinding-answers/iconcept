@@ -3,9 +3,10 @@ from iconcept.messages.abstract_datagram import AbstractDatagram
 
 
 class DeviceType(AbstractDatagram):
+    message: str = None
 
-    def __init__(self, message: str):
-        self.message = extract_datagram(message, self.get_header_pattern(), self.get_total_length())
+    def ingest_data(self, data: str) -> None:
+        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
 
     def get_header_pattern(self) -> str:
         return '55BB01'

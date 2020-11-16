@@ -3,9 +3,10 @@ from iconcept.messages.abstract_datagram import AbstractDatagram
 
 
 class DeviceFeedback(AbstractDatagram):
+    message: str = None
 
-    def __init__(self, message: str):
-        self.message = extract_datagram(message, self.get_header_pattern(), self.get_total_length())
+    def ingest_data(self, data: str) -> None:
+        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
 
     def get_header_pattern(self) -> str:
         return '550D'
@@ -66,32 +67,3 @@ class DeviceFeedback(AbstractDatagram):
             return 0
         pulse_hex = self.message[24: 24 + 2]
         return int(pulse_hex, 16)
-
-    '''
-                bptr += 3;
-            ByteBuffer bb = ByteBuffer.wrap(buffer, bptr, 10);
-            
-            FitnessHwApiDeviceFeedback statistic = new FitnessHwApiDeviceFeedback();
-            
-            start 6
-            statistic.time = bb.getShort(); //2bytes = 4 positions
-            start 6+4=10
-            byte distanceX = bb.get(); // 1 byte = 2 positions
-            start 10+2=12
-            byte distanceY = bb.get();// 1 byte = 2 positions
-            start 12+2=14
-            statistic.calorie = bb.getShort();//2bytes = 4 positions
-            start 14+4=18
-            byte speedX = bb.get();// 1 byte = 2 positions
-            start 18+2=20
-            byte speedY = bb.get();// 1 byte = 2 positions
-            start 20+2=22
-            statistic.incline = bb.get();// 1 byte = 2 positions
-            start 22+2=24
-            statistic.pulse = bb.get() & 0xFF; // 1 byte = 2 positions
-            
-            statistic.distance = (distanceX & 0xFF) + 1.0D * distanceY / 100.0D;
-            statistic.speed = (speedX & 0xFF) + 1.0D * speedY / 100.0D;
-            
-            FitnessHwApiDevice.this.notifyDeviceUpdate(statistic);
-    '''

@@ -2,6 +2,11 @@ from abc import ABCMeta, abstractmethod
 
 
 class AbstractDatagram(metaclass=ABCMeta):
+
+    @abstractmethod
+    def ingest_data(self, data: str) -> None:
+        pass
+
     @abstractmethod
     def get_header_pattern(self) -> str:
         pass

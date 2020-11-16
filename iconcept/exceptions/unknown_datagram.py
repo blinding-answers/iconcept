@@ -1,0 +1,2 @@
+class UnknownDatagram(Exception):
+    pass
