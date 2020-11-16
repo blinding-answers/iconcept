@@ -1,5 +1,6 @@
 from iconcept.message_extractor import extract_datagram
 from iconcept.messages.abstract_datagram import AbstractDatagram
+import json
 
 
 class UnknownMessage1(AbstractDatagram):
@@ -42,12 +43,8 @@ class UnknownMessage1(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage2(AbstractDatagram):
@@ -69,12 +66,8 @@ class UnknownMessage2(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage3(AbstractDatagram):
@@ -96,12 +89,8 @@ class UnknownMessage3(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage4(AbstractDatagram):
@@ -123,12 +112,8 @@ class UnknownMessage4(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage5(AbstractDatagram):
@@ -150,12 +135,8 @@ class UnknownMessage5(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage6(AbstractDatagram):
@@ -177,12 +158,8 @@ class UnknownMessage6(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage7(AbstractDatagram):
@@ -204,12 +181,8 @@ class UnknownMessage7(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage8(AbstractDatagram):
@@ -232,12 +205,8 @@ class UnknownMessage8(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage9(AbstractDatagram):
@@ -260,12 +229,8 @@ class UnknownMessage9(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage10(AbstractDatagram):
@@ -287,12 +252,14 @@ class UnknownMessage10(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
+    def __extract_data(self):
+        start = self.get_header_length()
+        end = start + self.get_message_length()
+        hex_string = self.message[start:end]
+        return hex_string
 
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{bytearray.fromhex(self.__extract_data()).decode()}"
 
 
 class UnknownMessage11(AbstractDatagram):
@@ -314,12 +281,14 @@ class UnknownMessage11(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
+    def __extract_data(self):
+        start = self.get_header_length()
+        end = start + self.get_message_length()
+        hex_string = self.message[start:end]
+        return hex_string
 
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{bytearray.fromhex(self.__extract_data()).decode()}"
 
 
 class UnknownMessage12(AbstractDatagram):
@@ -341,12 +310,8 @@ class UnknownMessage12(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage13(AbstractDatagram):
@@ -368,12 +333,8 @@ class UnknownMessage13(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage14(AbstractDatagram):
@@ -395,12 +356,8 @@ class UnknownMessage14(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage15(AbstractDatagram):
@@ -422,12 +379,8 @@ class UnknownMessage15(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage18(AbstractDatagram):
@@ -449,12 +402,8 @@ class UnknownMessage18(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage19(AbstractDatagram):
@@ -476,12 +425,8 @@ class UnknownMessage19(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage20(AbstractDatagram):
@@ -503,12 +448,8 @@ class UnknownMessage20(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage21(AbstractDatagram):
@@ -530,12 +471,8 @@ class UnknownMessage21(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage22(AbstractDatagram):
@@ -557,12 +494,8 @@ class UnknownMessage22(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
 
 
 class UnknownMessage23(AbstractDatagram):
@@ -584,9 +517,5 @@ class UnknownMessage23(AbstractDatagram):
     def is_valid(self) -> bool:
         return self.message is not None
 
-    def get_unit(self) -> int:
-        if not self.is_valid():
-            return 0
-
-        unit_hex = self.message[6: 6 + 2]
-        return int(unit_hex, 16)
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"

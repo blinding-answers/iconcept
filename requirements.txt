@@ -1,1 +1,13 @@
+attrs==20.3.0
+btproxy==0.1
+clone==0.0
+iniconfig==1.1.1
+packaging==20.4
+pluggy==0.13.1
+py==1.9.0
 PyBluez==0.23
+pyparsing==2.4.7
+pytest==6.1.2
+scapy==2.4.4
+six==1.15.0
+toml==0.10.2
