@@ -1,6 +1,6 @@
 from iconcept.message_extractor import extract_datagram
 from iconcept.messages.abstract_datagram import AbstractDatagram
-
+from iconcept.exceptions.invalid_datagram import InvalidDatagram
 
 class DeviceStatus(AbstractDatagram):
     message: str = None
@@ -18,11 +18,22 @@ class DeviceStatus(AbstractDatagram):
         return 2
 
     def is_valid(self) -> bool:
-        return self.message is not None
+        if self.message is None:
+            return False
+        # validate data
+        if self.__extract_status() in [0, 1, 2]:
+            return True
+
+        return False
 
     def get_status(self) -> int:
         if not self.is_valid():
-            return 0
+            raise InvalidDatagram(__name__)
 
-        status_hex = self.message[6: 6 + 2]
+        return self.__extract_status()
+
+    def __extract_status(self) -> int:
+        start = self.get_header_length()
+        end = start + self.get_message_length()
+        status_hex = self.message[start: end]
         return int(status_hex, 16)

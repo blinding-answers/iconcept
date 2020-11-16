@@ -21,3 +21,10 @@ class DeviceManufacturer(AbstractDatagram):
 
     def is_valid(self) -> bool:
         return self.message is not None
+
+    def get_manufacturer(self) -> str:
+        if not self.is_valid():
+            return ''
+
+        manufacturer_hex = self.message[6: 6 + self.get_message_length()]
+        return bytearray.fromhex(manufacturer_hex).decode()
