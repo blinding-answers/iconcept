@@ -2,6 +2,7 @@ from iconcept.message_extractor import extract_datagram
 from iconcept.messages.abstract_datagram import AbstractDatagram
 from iconcept.exceptions.invalid_datagram import InvalidDatagram
 
+
 class DeviceStatus(AbstractDatagram):
     message: str = None
 
@@ -35,5 +36,5 @@ class DeviceStatus(AbstractDatagram):
     def __extract_status(self) -> int:
         start = self.get_header_length()
         end = start + self.get_message_length()
-        status_hex = self.message[start: end]
-        return int(status_hex, 16)
+        hex_string = self.message[start: end]
+        return int(hex_string, 16)

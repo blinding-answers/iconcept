@@ -1,5 +1,6 @@
 from iconcept.message_extractor import extract_datagram
 from iconcept.messages.abstract_datagram import AbstractDatagram
+from iconcept.exceptions.invalid_datagram import InvalidDatagram
 
 
 class DeviceType(AbstractDatagram):
@@ -18,11 +19,22 @@ class DeviceType(AbstractDatagram):
         return 2
 
     def is_valid(self) -> bool:
-        return self.message is not None
+        if self.message is None:
+            return False
+
+        if self.__extract_type() in [1, 2, 3]:
+            return True
+
+        return False
 
     def get_type(self) -> int:
         if not self.is_valid():
-            return 0
+            raise InvalidDatagram(__name__)
 
-        type_hex = self.message[6: 6 + 2]
-        return int(type_hex, 16)
+        return self.__extract_type()
+
+    def __extract_type(self) -> int:
+        start = self.get_header_length()
+        end = start + self.get_message_length()
+        hex_string = self.message[start: end]
+        return int(hex_string, 16)

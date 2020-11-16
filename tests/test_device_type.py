@@ -1,36 +1,45 @@
+import unittest
 from iconcept.messages.device_type import DeviceType
+from iconcept.exceptions.invalid_datagram import InvalidDatagram
 
 
-def test_is_valid_with_valid_datagram_is_true():
-    datagram = "55bb0102"
-    device_type = DeviceType()
-    device_type.ingest_data(datagram)
-    assert True == device_type.is_valid()
+class DeviceTypeTest(unittest.TestCase):
 
+    def test_is_valid_with_valid_datagram_is_true(self):
+        datagram = "55bb0102"
+        device_type = DeviceType()
+        device_type.ingest_data(datagram)
+        self.assertTrue(device_type.is_valid())
 
-def test_is_valid_with_invalid_datagram_is_false():
-    datagram = "invalid"
-    device_type = DeviceType()
-    device_type.ingest_data(datagram)
+    def test_is_valid_with_invalid_datagram_is_false(self):
+        datagram = "invalid"
+        device_type = DeviceType()
+        device_type.ingest_data(datagram)
 
-    assert False == device_type.is_valid()
+        self.assertFalse(device_type.is_valid())
 
+    def test_get_type_gives_valid_values_with_valid_datagram(self):
+        datagram = "55bb0101"
+        device_type = DeviceType()
+        device_type.ingest_data(datagram)
 
-def test_get_type_gives_valid_values_with_valid_datagram():
-    datagram = "55bb0101"
-    device_type = DeviceType()
-    device_type.ingest_data(datagram)
+        self.assertEqual(1, device_type.get_type())
 
-    assert 1 == device_type.get_type()
+        datagram = "55bb0102"
+        device_type = DeviceType()
+        device_type.ingest_data(datagram)
 
-    datagram = "55bb0102"
-    device_type = DeviceType()
-    device_type.ingest_data(datagram)
+        self.assertEqual(2, device_type.get_type())
 
-    assert 2 == device_type.get_type()
+        datagram = "55bb0103"
+        device_type = DeviceType()
+        device_type.ingest_data(datagram)
 
-    datagram = "55bb0103"
-    device_type = DeviceType()
-    device_type.ingest_data(datagram)
+        self.assertEqual(3, device_type.get_type())
 
-    assert 3 == device_type.get_type()
+    def test_get_type_raises_exception_on_invalid_datagram(self):
+        datagram = "55bb0104"
+        device_type = DeviceType()
+        device_type.ingest_data(datagram)
+        with self.assertRaises(InvalidDatagram):
+            device_type.get_type()
