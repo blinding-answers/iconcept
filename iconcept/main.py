@@ -25,6 +25,7 @@ def loop(socket, commander):
     keep_alive_timer = time.time()
     start_time = time.time()
     started = False
+    abort_time = 60
     while True:
         readable, writable, exceptions = select.select([socket], [socket], [socket], 5)
         if len(readable) > 0:
@@ -50,12 +51,17 @@ def loop(socket, commander):
                 time.sleep(1)
                 commander.set_speed(5)
                 time.sleep(1)
+                commander.query_pulse_type()
+                time.sleep(1)
                 commander.start()
                 started = True
 
         if len(exceptions) > 0:
             logger.exception(exceptions)
             sys.exit()
+
+        if time.time() > start_time + abort_time:
+            break
 
         time.sleep(0.5)
 

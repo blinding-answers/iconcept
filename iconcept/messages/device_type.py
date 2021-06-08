@@ -40,4 +40,4 @@ class DeviceType(AbstractDatagram):
         return int(hex_string, 16)
 
     def __str__(self):
-        return f"{self.__class__.__name__}: type={self.get_type()}"
+        return f"{self.__class__.__name__}: {self.message}: type={self.get_type()}"

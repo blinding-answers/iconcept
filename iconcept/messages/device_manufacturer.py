@@ -30,4 +30,4 @@ class DeviceManufacturer(AbstractDatagram):
         return bytearray.fromhex(manufacturer_hex).decode()
 
     def __str__(self):
-        return f"{self.__class__.__name__}: manufacturer={self.get_manufacturer()}"
+        return f"{self.__class__.__name__}: {self.message}: manufacturer={self.get_manufacturer()}"

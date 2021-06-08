@@ -72,6 +72,7 @@ class DeviceFeedback(AbstractDatagram):
     def __str__(self):
         return json.dumps({
             self.__class__.__name__: {
+                "message": self.message,
                 "time": self.get_time(),
                 "distance": self.get_distance(),
                 "calorie": self.get_distance(),

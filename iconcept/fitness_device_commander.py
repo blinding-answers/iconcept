@@ -105,6 +105,13 @@ class FitnessDeviceCommander:
         command = "55B401FF"
         self.channel.send(command)
 
+    def query_pulse_type(self):
+        # 550701ff
+        logger.debug("QUERY PULSE TYPE")
+        # COMMAND_QUERY_PULSE_TYPE = [85, 7, 1, -1]  # 550701ff
+        command = "550701FF"
+        self.channel.send(command)
+
     def keep_alive(self, keep_alive: bool):
         logger.debug("KEEP ALIVE")
         # COMMAND_KEEP_ALIVE = [85, 23, 1]  # 551701

@@ -22,10 +22,13 @@ class FitnessDeviceMessageProcessorTest(unittest.TestCase):
         data_for_datagram1 = 'abdcd'
         data_for_datagram2 = 'cde12'
         datagrams1 = processor.get_datagrams(''.join([data_for_datagram1, data_for_datagram2]))
-        self.assertEqual([fake_datagram1, fake_datagram2], datagrams1)
+        self.assertEqual(fake_datagram1.get_header_pattern(), datagrams1[0].get_header_pattern())
+        self.assertEqual(fake_datagram2.get_header_pattern(), datagrams1[1].get_header_pattern())
 
         datagrams2 = processor.get_datagrams(''.join([data_for_datagram2, data_for_datagram1]))
-        self.assertEqual([fake_datagram2, fake_datagram1], datagrams2)
+
+        self.assertEqual(fake_datagram2.get_header_pattern(), datagrams2[0].get_header_pattern())
+        self.assertEqual(fake_datagram1.get_header_pattern(), datagrams2[1].get_header_pattern())
 
     def test_process_throws_exception_with_invalid_data(self):
         fake_datagram = self.create_datagram('abd', 3, 2)

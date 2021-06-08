@@ -29,4 +29,4 @@ class DeviceModel(AbstractDatagram):
         return bytearray.fromhex(model_hex).decode()
 
     def __str__(self):
-        return f"{self.__class__.__name__}: model={self.get_model()}"
+        return f"{self.__class__.__name__}: {self.message}: model={self.get_model()}"

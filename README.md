@@ -380,3 +380,8 @@ from client  acl
 
 55170101 = (85,23,1,1)
      
+     
+55090100 =  paused  
+55090101 = running  
+55090102 = standby  
+550B0101 = stop  

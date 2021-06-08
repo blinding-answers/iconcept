@@ -1,6 +1,7 @@
 from iconcept.message_extractor import extract_datagram
 from iconcept.messages.abstract_datagram import AbstractDatagram
 from iconcept.exceptions.invalid_datagram_exception import InvalidDatagramException
+from iconcept.enums.fitness_devices_status import FitnessDeviceStatus
 
 
 class DeviceStatus(AbstractDatagram):
@@ -40,4 +41,5 @@ class DeviceStatus(AbstractDatagram):
         return int(hex_string, 16)
 
     def __str__(self):
-        return f"{self.__class__.__name__}: status={self.get_status()}"
+
+        return f"{self.__class__.__name__}: {self.message}: status=[{FitnessDeviceStatus.get_status_description(self.get_status())}]{self.get_status()}"
