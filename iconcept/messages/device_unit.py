@@ -27,5 +27,12 @@ class DeviceUnit(AbstractDatagram):
         unit_hex = self.message[6: 6 + 2]
         return int(unit_hex, 16)
 
+    def get_unit_description(self) -> str:
+        units = [
+            'Metric',
+            'Imperial'
+        ]
+        return units[self.get_unit()]
+
     def __str__(self):
-        return f"{self.__class__.__name__}: {self.message}: unit={self.get_unit()}"
+        return f"{self.__class__.__name__}: {self.message}: unit={self.get_unit_description()}"

@@ -23,10 +23,24 @@ class DeviceStatus(AbstractDatagram):
         if self.message is None:
             return False
         # validate data
+        # 0 - paused
+        # 1 - started
+        # 2 - Stopped
         if self.__extract_status() in [0, 1, 2]:
             return True
 
         return False
+
+    def get_status_description(self) -> str:
+        if not self.is_valid():
+            return ""
+
+        descriptions = [
+            "Paused",
+            "Started",
+            "Stopped"
+        ]
+        return descriptions[self.get_status()]
 
     def get_status(self) -> int:
         if not self.is_valid():
@@ -42,4 +56,4 @@ class DeviceStatus(AbstractDatagram):
 
     def __str__(self):
 
-        return f"{self.__class__.__name__}: {self.message}: status=[{FitnessDeviceStatus.get_status_description(self.get_status())}]{self.get_status()}"
+        return f"{self.__class__.__name__}: {self.message}: status=[{self.get_status_description()}]:{self.get_status()}"

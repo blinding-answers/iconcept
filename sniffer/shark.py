@@ -16,6 +16,7 @@ pscap_files = fnmatch.filter(os.listdir(dumps_dir), '*.pcap')
 for filename in pscap_files:
 
     file_path = os.path.join(dumps_dir, filename)
+    print(file_path)
     cap1 = pyshark.FileCapture(file_path)
 
     packet: Packet

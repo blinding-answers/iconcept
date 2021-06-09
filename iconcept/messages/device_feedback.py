@@ -70,14 +70,15 @@ class DeviceFeedback(AbstractDatagram):
         return int(pulse_hex, 16)
 
     def __str__(self):
-        return json.dumps({
-            self.__class__.__name__: {
-                "message": self.message,
-                "time": self.get_time(),
-                "distance": self.get_distance(),
-                "calorie": self.get_distance(),
-                "speed": self.get_speed(),
-                "incline": self.get_incline(),
-                "pulse": self.get_pulse(),
-            }
-        }, indent=4)
+        return " ".join([
+            self.__class__.__name__,
+            "(",
+            "message =", self.message,
+            "time =", str(self.get_time()),
+            "distance =", str(self.get_distance()),
+            "calorie =", str(self.get_calorie()),
+            "speed =", str(self.get_speed()),
+            "incline =", str(self.get_incline()),
+            "pulse =", str(self.get_pulse()),
+            ")"
+        ])

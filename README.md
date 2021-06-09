@@ -1,4 +1,6 @@
 # iConcept pyhton driver
+/data/misc/bluetooth/logs/btsnoop_hci.log
+
 Interface and control iConcept pafers
 
 ##Idea
@@ -10,7 +12,11 @@ Load a route profile.  (GPX)
 
 # PROTOCOL
 
-Data: 55170101
+Data: 55170101 //keepalive
+response : 551E0101 //keepalive ack ??
+
+55C0020FC1 -> possible response on pulse type
+
 
     START COMMAND
     DEBUG:iconcept.bluetooth.chat_service:Got command from command_q:[85, 10, 1, 1] //start
@@ -378,10 +384,20 @@ from treadmill
     
 from client  acl
 
-55170101 = (85,23,1,1)
+55170101 = (85, 23, 1, 1) //keep alive
      
      
 55090100 =  paused  
 55090101 = running  
 55090102 = standby  
 550B0101 = stop  
+
+//possibly ack ?
+551E0101 = 85, 30, 1, 1
+
+55B501FF = 85, -74, 1, -1
+
+
+* Receives these to packets after start and reset
+DEBUG:__main__:UnknownMessage1:55C0020AC2
+DEBUG:__main__:UnknownMessage1:55C0020AC1

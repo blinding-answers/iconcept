@@ -193,35 +193,6 @@ class UnknownMessage10(AbstractDatagram):
         return f"{self.__class__.__name__}: {self.message}: {bytearray.fromhex(self.__extract_data()).decode()}"
 
 
-class UnknownMessage11(AbstractDatagram):
-    message: str = None
-
-    def ingest_data(self, data: str) -> None:
-        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
-
-    def get_header_pattern(self) -> str:
-        # 55B40C 313230374D20202020202020(1207M       )
-        return '55B40C'
-
-    def get_header_length(self) -> int:
-        return 6
-
-    def get_message_length(self) -> int:
-        return 24
-
-    def is_valid(self) -> bool:
-        return self.message is not None
-
-    def __extract_data(self):
-        start = self.get_header_length()
-        end = start + self.get_message_length()
-        hex_string = self.message[start:end]
-        return hex_string
-
-    def __str__(self):
-        return f"{self.__class__.__name__}: {self.message}: {bytearray.fromhex(self.__extract_data()).decode()}"
-
-
 class UnknownMessage12(AbstractDatagram):
     message: str = None
 
@@ -383,52 +354,6 @@ class UnknownMessage21(AbstractDatagram):
         return f"{self.__class__.__name__}:{self.message}"
 
 
-class UnknownMessage23(AbstractDatagram):
-    message: str = None
-
-    def ingest_data(self, data: str) -> None:
-        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
-
-    def get_header_pattern(self) -> str:
-        # 551E0101
-        return '551E01'
-
-    def get_header_length(self) -> int:
-        return 6
-
-    def get_message_length(self) -> int:
-        return 2
-
-    def is_valid(self) -> bool:
-        return self.message is not None
-
-    def __str__(self):
-        return f"{self.__class__.__name__}:{self.message}"
-
-
-class UnknownMessage24(AbstractDatagram):
-    message: str = None
-
-    def ingest_data(self, data: str) -> None:
-        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
-
-    def get_header_pattern(self) -> str:
-        # 550F020100
-        return '550F02'
-
-    def get_header_length(self) -> int:
-        return 6
-
-    def get_message_length(self) -> int:
-        return 4
-
-    def is_valid(self) -> bool:
-        return self.message is not None
-
-    def __str__(self):
-        return f"{self.__class__.__name__}:{self.message}"
-
-
 class UnknownMessage25(AbstractDatagram):
     message: str = None
 
@@ -444,52 +369,6 @@ class UnknownMessage25(AbstractDatagram):
 
     def get_message_length(self) -> int:
         return 2
-
-    def is_valid(self) -> bool:
-        return self.message is not None
-
-    def __str__(self):
-        return f"{self.__class__.__name__}:{self.message}"
-
-
-class UnknownMessage27(AbstractDatagram):
-    message: str = None
-
-    def ingest_data(self, data: str) -> None:
-        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
-
-    def get_header_pattern(self) -> str:
-        # 550A0102
-        return '550A01'
-
-    def get_header_length(self) -> int:
-        return 6
-
-    def get_message_length(self) -> int:
-        return 2
-
-    def is_valid(self) -> bool:
-        return self.message is not None
-
-    def __str__(self):
-        return f"{self.__class__.__name__}:{self.message}"
-
-
-class UnknownMessage28(AbstractDatagram):
-    message: str = None
-
-    def ingest_data(self, data: str) -> None:
-        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
-
-    def get_header_pattern(self) -> str:
-        # 5501061E003C00AA00
-        return '550106'
-
-    def get_header_length(self) -> int:
-        return 6
-
-    def get_message_length(self) -> int:
-        return 12
 
     def is_valid(self) -> bool:
         return self.message is not None
@@ -551,8 +430,54 @@ class UnknownMessage31(AbstractDatagram):
         self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
 
     def get_header_pattern(self) -> str:
-        # 55080101
-        return '550801'
+        # 55270101
+        return '552701'
+
+    def get_header_length(self) -> int:
+        return 6
+
+    def get_message_length(self) -> int:
+        return 2
+
+    def is_valid(self) -> bool:
+        return self.message is not None
+
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
+
+
+class UnknownMessage32(AbstractDatagram):
+    message: str = None
+
+    def ingest_data(self, data: str) -> None:
+        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
+
+    def get_header_pattern(self) -> str:
+        # 55030100
+        return '550301'
+
+    def get_header_length(self) -> int:
+        return 6
+
+    def get_message_length(self) -> int:
+        return 2
+
+    def is_valid(self) -> bool:
+        return self.message is not None
+
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.message}"
+
+
+class UnknownMessage33(AbstractDatagram):
+    message: str = None
+
+    def ingest_data(self, data: str) -> None:
+        self.message = extract_datagram(data, self.get_header_pattern(), self.get_total_length())
+
+    def get_header_pattern(self) -> str:
+        # 551B01B8
+        return '551B01B8'
 
     def get_header_length(self) -> int:
         return 6

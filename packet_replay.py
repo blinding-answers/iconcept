@@ -55,7 +55,10 @@ def json_pcap_to_rfcomm_packet(json_file: str) -> List[RfcommPacket]:
     return output
 
 
-json_path = os.path.join('sniffer', 'packet_dumps', 'fit_packets.json')
+json_path = os.path.join('sniffer', 'packet_dumps', 'fitconsole_20210608.json')
+# json_path = os.path.join('sniffer', 'packet_dumps', 'bhfitnesszwiftlink_20200608.json')
+# json_path = os.path.join('sniffer', 'packet_dumps', 'bhfitnesszwiftlink_20210609.json')
+# json_path = os.path.join('sniffer', 'packet_dumps', 'bhfitnesszwiftlink_20210609-1.json')
 
 received_packets = json_pcap_to_rfcomm_packet(json_path)
 
